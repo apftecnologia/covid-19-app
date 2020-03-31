@@ -1,2 +1,2 @@
-export * from './DataItem'
-export * from './SearchBar'
+export * from './DataItem';
+export * from './SearchBar';

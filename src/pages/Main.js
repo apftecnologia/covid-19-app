@@ -1,77 +1,112 @@
-import React, { useState, useEffect } from 'react'
-import { SafeAreaView, View, Text, FlatList, Image, TouchableOpacity } from 'react-native'
+import React, {useState, useEffect} from 'react';
+import {
+  SafeAreaView,
+  View,
+  Text,
+  FlatList,
+  TouchableOpacity,
+  StatusBar,
+} from 'react-native';
 
-import styles from '../utils/styles'
-import { createList } from '../utils/functions'
-import { SearchBar, DataItem } from '../components'
+import styles from '../utils/styles';
+import {createList} from '../utils/functions';
+import {SearchBar, DataItem} from '../components';
+
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 export default Main = props => {
-  const
-    [loading, setLoading] = useState(true),
+  const [loading, setLoading] = useState(true),
     [dataList, setDataList] = useState([]),
-    [originalList, setOriginalList] = useState([])
+    [originalList, setOriginalList] = useState([]);
 
   const fetchData = async () => {
-    setLoading(true)
+    setLoading(true);
 
-    let statusList = await createList()
+    let statusList = await createList();
 
-    setOriginalList(statusList)
-    setDataList(statusList[0])
-    setLoading(false)
-  }
+    setOriginalList(statusList);
+    setDataList(statusList[0]);
+    setLoading(false);
+  };
 
-  useEffect(() => { fetchData() }, [])
+  useEffect(() => {
+    fetchData();
+  }, []);
 
   searchByName = text => {
     let filteredList = originalList[0].filter(item => {
-      const itemData = item.country.toUpperCase()
-      const textData = text.toUpperCase()
+      const itemData = item.country.toUpperCase();
+      const textData = text.toUpperCase();
 
-      return itemData.indexOf(textData) > -1
-    })
+      return itemData.indexOf(textData) > -1;
+    });
 
-    setDataList(filteredList)
-  }
+    setDataList(filteredList);
+  };
 
   renderListHeader = () => {
     return (
-      <View style={styles.main.header}>
-        <Text style={styles.main.sortTitle}>Sırala:</Text>
+      <>
+        <StatusBar barStyle={styles.statusBar} />
+        <View style={styles.main.header}>
+          <Text style={styles.main.sortTitle}>Filtro:</Text>
 
-        <TouchableOpacity style={{ flexDirection: 'row', alignItems: 'center' }} onPress={() => setDataList([...originalList[1].reverse()])}>
-          <Image source={require('../assets/sort.png')} style={[styles.main.sort.image, { tintColor: 'orange' }]} />
-          <Text style={[styles.main.sort.title, { color: 'orange' }]}>Vaka/Nüfus</Text>
-        </TouchableOpacity>
+          <TouchableOpacity
+            style={{flexDirection: 'row', alignItems: 'center'}}
+            onPress={() => setDataList([...originalList[1].reverse()])}>
+            <Icon name="heart-pulse" size={24} color={styles.valueNumCases} />
 
-        <TouchableOpacity style={{ flexDirection: 'row', alignItems: 'center' }} onPress={() => setDataList([...originalList[2].reverse()])}>
-          <Image source={require('../assets/sort.png')} style={[styles.main.sort.image, { tintColor: 'red' }]} />
-          <Text style={[styles.main.sort.title, { color: 'red' }]}>Ölüm/Vaka</Text>
-        </TouchableOpacity>
+            <Text
+              style={[styles.main.sort.title, {color: styles.valueNumCases}]}>
+              Infectados
+            </Text>
+          </TouchableOpacity>
 
-        <TouchableOpacity style={{ flexDirection: 'row', alignItems: 'center' }} onPress={() => setDataList([...originalList[3].reverse()])}>
-          <Image source={require('../assets/sort.png')} style={[styles.main.sort.image, { tintColor: 'green' }]} />
-          <Text style={[styles.main.sort.title, { color: 'green' }]}>İyileşme/Vaka</Text>
-        </TouchableOpacity>
-      </View>
-    )
-  }
+          <TouchableOpacity
+            style={{flexDirection: 'row', alignItems: 'center'}}
+            onPress={() => setDataList([...originalList[2].reverse()])}>
+            <Icon name="heart-broken" size={24} color={styles.valueNumDeath} />
+            <Text
+              style={[styles.main.sort.title, {color: styles.valueNumDeath}]}>
+              Mortos
+            </Text>
+          </TouchableOpacity>
 
-  renderCountries = ({ item }) => <DataItem item={item} />
+          <TouchableOpacity
+            style={{flexDirection: 'row', alignItems: 'center'}}
+            onPress={() => setDataList([...originalList[3].reverse()])}>
+            <Icon name="heart" size={24} color={styles.valueNumRecovered} />
 
-  renderSeperator = () => <View style={styles.main.seperator} />
+            <Text
+              style={[
+                styles.main.sort.title,
+                {color: styles.valueNumRecovered},
+              ]}>
+              Curados
+            </Text>
+          </TouchableOpacity>
+        </View>
+      </>
+    );
+  };
+
+  renderCountries = ({item}) => <DataItem item={item} />;
+
+  renderSeperator = () => <View style={styles.main.seperator} />;
 
   renderEmpty = () => {
-    return (
-      loading ?
-        <View style={{ flex: 1 }} />
-        :
-        <View style={styles.center}>
-          <Image source={require('../assets/search.png')} style={styles.main.noResult.image} />
-          <Text style={styles.main.noResult.title}>{`Aramanıza uygun sonuç yok\nYa da ne mutlu ki o ülkede vaka yok.`}</Text>
-        </View>
-    )
-  }
+    return loading ? (
+      <View style={{flex: 1}} />
+    ) : (
+      <View style={styles.center}>
+        <Icon name="magnify-close" color="#999" size={104} />
+        <Text
+          style={
+            styles.main.noResult.title
+          }>{`Nenhum resultado corresponde à sua pesquisa.`}</Text>
+      </View>
+    );
+  };
 
   return (
     <SafeAreaView style={styles.mainContainer}>
@@ -83,12 +118,12 @@ export default Main = props => {
         renderItem={renderCountries}
         ListEmptyComponent={renderEmpty}
         ListHeaderComponent={renderListHeader}
-        contentContainerStyle={{ flexGrow: 1 }}
+        contentContainerStyle={{flexGrow: 1}}
         ItemSeparatorComponent={renderSeperator}
         keyExtractor={(_, index) => index.toString()}
       />
     </SafeAreaView>
-  )
-}
+  );
+};
 
 // #evdekal
