@@ -3,7 +3,7 @@
 </h1>
 
 <h4 align="center"> 
- 🚀 App Status Covid 19 in the World
+ 🚀 App Status Covid 19 (new Coronavirus) in the World
 </h4>
 <p align="center">
   <img alt="GitHub language count" src="https://img.shields.io/github/languages/count/tgmarinho/be-the-hero?color=%2304D361">
@@ -42,7 +42,7 @@ This application uses [REST Countries v1](https://rapidapi.com/apilayernet/api/r
 It's created for just experimental. You can fork and work with it however you want.
 
 <h1 align="center">
-    <img alt="Login-Page" title="Login-Page" src="./github/1.jpg" width="300px" />
+    <img alt="Login-Page" title="Login-Page" src=".github/1.jpg" width="300px" />
 </h1>
 
 ## :rocket: Technologies
@@ -56,6 +56,15 @@ This project was developed with the following technologies:
 |              ●              |              ●              |              ●              |
 | :-------------------------: | :-------------------------: | :-------------------------: |
 | ![img-1](.github/1.jpg '1') | ![img-2](.github/2.jpg '2') | ![img-3](.github/3.jpg '3') |
+
+## How to Run
+
+- Make a fork && clone
+- Inside of the root folder run:
+  - `npm install` or `yarn`
+  - `cd ios && pod install && cd ..`
+  - `npx react-native run-ios` (macOS users) or `npx react-native run-android`
+  - Start to play!
 
 ## 🤔 How to contribute
 
